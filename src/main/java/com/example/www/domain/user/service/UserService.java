@@ -9,6 +9,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class UserService {
 
@@ -56,5 +59,22 @@ public class UserService {
         dto.setRole(entity.getRole().toString());
 
         return dto;
+    }
+
+    // 복수 User 조회 (Read)
+    public List<UserResponseDTO> readAllUser() {
+        List<UserEntity> users = userRepository.findAll();
+
+        List<UserResponseDTO> dtos = new ArrayList<>();
+
+        for (UserEntity user : users) {
+            UserResponseDTO dto = new UserResponseDTO();
+            dto.setUsername(user.getUsername());
+            dto.setNickname(user.getNickname());
+            dto.setRole(user.getRole().toString());
+
+            dtos.add(dto);
+        }
+        return dtos;
     }
 }
