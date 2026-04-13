@@ -1,6 +1,7 @@
 package com.example.www.domain.user.service;
 
 import com.example.www.domain.user.dto.UserRequestDTO;
+import com.example.www.domain.user.dto.UserResponseDTO;
 import com.example.www.domain.user.entity.UserEntity;
 import com.example.www.domain.user.entity.UserRoleType;
 import com.example.www.domain.user.repository.UserRepository;
@@ -40,5 +41,20 @@ public class UserService {
 
         // User 엔티티 저장소에 저장
         userRepository.save(entity);
+    }
+
+
+    // 단일 User 조회 (Read)
+    @Transactional(readOnly = true)
+    public UserResponseDTO readOneUser(String username) {
+
+        UserEntity entity = userRepository.findByUsername(username).orElseThrow();
+
+        UserResponseDTO dto = new UserResponseDTO();
+        dto.setUsername(entity.getUsername());
+        dto.setNickname(entity.getNickname());
+        dto.setRole(entity.getRole().toString());
+
+        return dto;
     }
 }
